@@ -8,8 +8,11 @@ use lib File::Spec->catdir(dirname(__FILE__), 'lib');
 use Amon2::Lite;
 use Cwd;
 use URI::Escape;
+use Plack::Builder;
 
 our $VERSION = '0.01';
+
+my $current_dir = Cwd::getcwd();
 
 sub load_config {
     my $c = shift;
@@ -27,35 +30,11 @@ get '/' => sub {
     });
 };
 
-get '/image/{filename}' => sub {
-    my ($c, $args) = @_;
-
-    my $filepath = Cwd::getcwd() . '/' . $args->{filename};
-
-    unless (-f $filepath) {
-        return $c->res_404;
-    }
-
-    my $fh;
-    open $fh, $filepath;
-
-    my $content = do { local $/; <$fh> };
-
-    my $res = $c->create_response(
-        200, [
-            'Content-Type'   => 'image/' . (split '\.', $filepath)[-1],
-            'Content-Length' => -s $filepath,
-        ],
-        $content,
-    );
-
-    close $fh;
-
-    return $res;
+builder {
+    enable "Plack::Middleware::Static",
+        path => qr{^/.+\.(png|jpe?g|gif)$}, root => Cwd::getcwd();
+    __PACKAGE__->to_app(handle_static => 1);
 };
-
-# load plugins
-__PACKAGE__->to_app(handle_static => 1);
 
 __DATA__
 
@@ -74,7 +53,7 @@ __DATA__
 <div class="container">
 <header><h1>Gallary at [% dir_path %]</h1></header>
     [% FOREACH file IN files %]
-    <div class="image"><img src="/image/[% file %]" width="175" /></div>
+    <div class="image"><img src="/[% file %]" width="175" /></div>
     [% END %]
 </div>
 </body>
