@@ -44,14 +44,14 @@ __DATA__
 
 <head>
 <met charst="utf-8">
-<title>Gallary</title>
+<title>Gallery</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="[% uri_for('/static/css/main.css') %]">
 </head>
 
 <body>
 <div class="container">
-<header><h1>Gallary at [% dir_path %]</h1></header>
+<header><h1>Gallery at [% dir_path %]</h1></header>
     [% FOREACH file IN files %]
     <div class="image"><img src="/[% file %]" width="175" /></div>
     [% END %]

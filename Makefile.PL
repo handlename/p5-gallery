@@ -1,7 +1,7 @@
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME          => 'Gallary',
+    NAME          => 'Gallery',
     AUTHOR        => 'Some Person <person@example.com>',
     VERSION_FROM  => 'app.psgi',
     PREREQ_PM     => {
