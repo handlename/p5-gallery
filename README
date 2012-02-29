@@ -1,0 +1,2 @@
+$ cd /path/to/images/dir
+$ plackup /path/to/Gallery/app.psgi
